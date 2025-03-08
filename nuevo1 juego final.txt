@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALCULO DIFERENCIAL Y EL DRAGON</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: 'MedievalSharp', cursive;
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+        }
+        #dragon {
+            font-size: 150px;
+            margin: 20px 0;
+            animation: flame 1.5s infinite alternate;
+        }
+        @keyframes flame {
+            from { color: #ff6347; }
+            to { color: #ff4500; }
+        }
+        #timer, #question, #attempts {
+            font-size: 24px;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            border: 3px solid #fff;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        button:hover {
+            background: #ff4500;
+            cursor: pointer;
+        }
+        #gameOver {
+            display: none;
+            text-align: center;
+            margin-top: 50px;
+            font-size: 40px;
+            color: #ff4500;
+        }
+        #gameOver img {
+            width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>🔥 CALCULO DIFERENCIAL Y EL DRAGON 🔥</h1>
+<div id="dragon">🐉</div>
+<div id="timer">Tiempo restante: 180 segundos</div>
+<div id="question"></div>
+<input type="text" id="answer" placeholder="Tu respuesta aquí">
+<button onclick="checkAnswer()">Responder</button>
+<p id="attempts">Oportunidades restantes: 3</p>
+<div id="gameOver">
+    <p>GAME OVER</p>
+    <img src="PERDISTE BRO" alt="SIGUE ESTUDIANDO">
+</div>
+<script>
+    const questions = [
+        { question: "Teniendo en cuenta que f(x)=x^2-4 y g(x)=x+2 cuanto es (f+g)(x)", answer: "x^2+X+2" },
+        { question: "Teniendo en cuenta que f(x)=x^2-4 y g(x)=x+2 cuanto es (f.g)(x)", answer: "x³+x^2-4x-8" },
+        { question: "Teniendo en cuenta que f(x)=x^2-4 y g(x)=x+2 cuanto es (f/g)(x)", answer: "x-2" },
+        { question: "Teniendo en cuenta que f(x)=x^2-4 y g(x)=x+2 cuanto es (f o g)(x)", answer: "x^2+4x" },
+        { question: "lim 4x^2 (x → -1) sustitucion directa", answer: "4" },
+        { question: "lim (3x+2) (x → -3)  sustitucion directa", answer: "-7" },
+        { question: "lim x+1/x^2-3x-4) (x → -1)  factiorizacion", answer: "1/-5" },
+        { question: "lim (x-7/x^2-49) (x → 7) factoriza el que tiene al cuadrado ", answer: "1/14" }
+    ];
+    let currentQuestion = Math.floor(Math.random() * questions.length);
+    let attempts = 3;
+    let timer = 180;
+
+    function showQuestion() {
+        document.getElementById("question").innerText = questions[currentQuestion].question;
+    }
+
+    showQuestion();
+
+    const interval = setInterval(() => {
+        timer--;
+        document.getElementById("timer").innerText = `Tiempo restante: ${timer} segundos`;
+        if (timer <= 0) {
+            endGame();
+        }
+    }, 1000);
+
+    function checkAnswer() {
+        const answer = document.getElementById("answer").value.trim();
+        if (answer === questions[currentQuestion].answer) {
+            alert("¡Correcto! Avanzas a la siguiente pregunta");
+        } else {
+            attempts--;
+            document.getElementById("attempts").innerText = `Oportunidades restantes: ${attempts}`;
+            alert("Respuesta incorrecta ❌");
+        }
+        if (attempts <= 0) {
+            endGame();
+        }
+        currentQuestion = Math.floor(Math.random() * questions.length);
+        document.getElementById("answer").value = "";
+        showQuestion();
+    }
+
+    function endGame() {
+        clearInterval(interval);
+        document.getElementById("gameOver").style.display = "block";
+        document.getElementById("dragon").style.display = "none";
+        document.getElementById("question").style.display = "none";
+        document.getElementById("answer").style.display = "none";
+        document.querySelector("button").style.display = "none";
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("attempts").style.display = "none";
+    }
+</script>
+</body>
+</html>
